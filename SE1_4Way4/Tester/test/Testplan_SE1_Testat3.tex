@@ -1,0 +1,97 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[right = 1.5cm, left = 2.5cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{csquotes}
+\usepackage[ngerman]{babel}
+\pagestyle{fancy}
+
+
+\lhead{Testplan 4Way4 Team Jan}
+\rhead{\today}
+\begin{document}
+
+	\vspace*{\fill}
+	%Title
+	{\centering \section*{{\underline{\Huge Testplan 4Way4}}}}\vspace{4ex}
+	\section*{Testplan von Lorenz Schwab und Lukas Koddenberg}
+	\vfill
+	
+	\pagebreak
+	\section{Testgegenstand}
+	Testgegenstand ist das in der SE1-Vorlesung vorgestellte Spiel \enquote{4\,Way\,4}, welches von jedem
+	Team programmiert werden soll. Das Spiel kann als eine Variante des beliebten Brettspielklassikers
+	\enquote{vier gewinnt} angesehen werden.
+	
+	\section{Umfang}
+	Zu testen sind folgende funktionale und nicht funktionale Anforderungen:
+	\begin{itemize}
+		\item Spielfeldgröße von $7*7$ bis $10*10$. Es muss nicht quadratisch sein.
+		\item jeder Spielstein (Token) belegt genau ein Feld.
+		\item Spielmodus Spieler\,1 gegen Spieler\,2
+		\item Die Spielregeln werden eingehalten.
+		\item Spielmodus Spieler\,1 gegen CPU: \\
+		CPU in drei verschiedenen Schwierigkeitsstufen
+	\end{itemize}
+	
+	\section{Spielregeln: }
+	\begin{enumerate}
+		\item Wird ein Token eingeworfen, so werden alle auf dem Feld befindliche Tokens so weit in
+		die Richtung gerückt, in die der Token das Feld betreten hat, wie möglich. Die Spielfeldränder sind
+		dabei die Höchstgrenze.
+		
+		\item Gewonnen hat der Spieler, der als erstes vier Tokens in einer Reihe hat. Eine Reihe kann
+		horizontal, vertikal und diagonal sein.
+		
+		\item Das Spiel endet, wenn ein Spieler oder die CPU gewinnt, oder wenn alle Felder des Spielfeldes
+		belegt sind. Dann gewinnt der Spieler, der den letzten Zug machen konnte.
+		
+		\item Spielmodus Spieler gegen CPU: \\
+		Der Spieler entscheidet, wer beginnt.
+	\end{enumerate}
+	
+	\section{Testen der funktionalen Anforderungen}
+	\begin{itemize}
+		\item Spielfeldgröße von $7*7$ bis $10*10$. Es muss nicht quadratisch sein.
+		\item jeder Spielstein (Token) belegt genau ein Feld.
+		\item Spielmodus Spieler gegen Spieler
+		\item Die Spielregeln werden eingehalten.
+	\end{itemize}
+	
+	\pagebreak
+	
+	\subsection{Testen der funktionalen Anforderungen}
+	\subsubsection{Testen auf dem Papier (Black\,-\,Box\,-\,Test)}
+	Die ersten Tests wurden von den Teammitgliedern mit Stift und Papier \\
+	(meist auf einem $7*7$ - Spielfeld) durchgeführt, um die zugrundeliegende Funktionsweise	
+	des Spiels zu verstehen. Außerdem wurde eine Runde mit dem Kunden zusammen an der Tafel gespielt, 
+	um Verständnisfragen zu klären.
+	
+	\subsubsection{JUNIT}
+	Die meisten Tests sind aus Gründen der Automatisierung mit JUNIT geschrieben, denn bei über 90\% der Fälle
+	macht es einfach keinen Sinn, manuell zu testen.\newline
+	Vor allem müssen die Extremfälle getestet werden. Extremfälle sind zum Beispiel das Abfangen von 
+	Exceptions bei Falscheingaben, um zu verhindern, dass das Spiel aufgrund einer Falscheingabe abstürzt. 
+	
+	\subsection{Tests: }
+	\subsubsection{Testkriterien}
+	Die Spielfeldgröße muss zwischen $7*7$ und $10*10$ liegen.\\
+	Das Spielfeld kann auch rechteckig sein, nicht nur quadratisch.\\
+	Jeder Token belegt ein Feld.\\
+	Spielmodus Spieler\,1 gegen Spieler\,2.\\
+	Die Spielregeln werden eingehalten.\\
+	
+	\subsubsection{Testende}
+	Die Spielfeldgröße kann im Bereich $7*7$ bis $10*10$ ganzzahlig festgelegt werden.\\
+	Das Spielfeld kann rechteckig sein, nicht nur quadratisch.\\
+	Jeder Token belegt ein Feld.\\
+	Es gibt den Spielmodus Spieler\,1 gegen Spieler\,2.\\
+	Die Spielregeln werden eingehalten.\\
+	
+	\subsubsection{Testabbruch}
+	Die Spielfeldgröße liegt nicht zwischen $7*7$ und $10*10$ oder ist nicht ganzzahlig.\\
+	Das Spielfeld kann nur quadratisch sein oder andere Formen als ein Rechteck annehmen.\\
+	Jeder Token belegt mehr oder weniger als ein Feld.\\
+	Spielmodus Spieler\,1 gegen Spieler\,2 existiert nicht.\\
+	Die Spielregeln werden nicht eingehalten.\\		
+	
+\end{document}
