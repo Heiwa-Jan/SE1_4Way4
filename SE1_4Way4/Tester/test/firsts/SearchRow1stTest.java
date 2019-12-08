@@ -5,7 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class SearchRow1stTest {
-
+	
+/******************************************
+******************************************* 
+**                                       **
+**          ACHTUNG PROTOTYP             **
+**                                       **
+*******************************************
+*******************************************/
+	
+	
 	@Test
 	void winnerTest() {
 		GameBoard testBoard = new GameBoard();
