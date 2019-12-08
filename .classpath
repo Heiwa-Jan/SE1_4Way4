@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="SE1_4Way4/OOA_OOD"/>
 	<classpathentry kind="src" path="SE1_4Way4/Programmierer"/>
 	<classpathentry kind="src" path="SE1_4Way4/Tester"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

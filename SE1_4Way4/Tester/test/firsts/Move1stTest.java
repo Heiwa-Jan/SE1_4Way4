@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import src.model.GameBoard;
+import src.model.Move;
+import src.model.Player;
+
 class Move1stTest {
 
 	public static final String UP = "u";
@@ -14,129 +18,91 @@ class Move1stTest {
 	@Test
 	void validStringTest() {
 		GameBoard testBoard = new GameBoard(7, 7);
-		testBoard.calculateNewBoard();
 		
-		Player testPlayer = new Player(1);
+		Player testPlayer = new Player("test");
 
-		Move testMove = new Move("some string", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		Move testMove = new Move(testBoard);
+		assertFalse(testMove.isValidString("some string"));
 
-		testMove = new Move(String.valueOf('a' - 1) + "8", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString(String.valueOf('a' - 1) + "8"));
 
-		testMove = new Move("h0", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("h0"));
 
-		testMove = new Move(String.valueOf('A' - 1) + "8", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString(String.valueOf('A' - 1) + "8"));
 
-		testMove = new Move("H0", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("H0"));
 
-		testMove = new Move("b0", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g8"));
 
-		testMove = new Move("g8", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("b0"));
 
-		testMove = new Move("b0", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("a1" + DOWN));
 
-		testMove = new Move("b0", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("a1" + LEFT));
 
-		testMove = new Move("a1" + DOWN, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g1" + RIGHT));
 
-		testMove = new Move("a1" + LEFT, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g1" + DOWN));
 
-		testMove = new Move("g1" + RIGHT, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g7" + UP));
 
-		testMove = new Move("g1" + DOWN, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g7" + LEFT));
 
-		testMove = new Move("g7" + UP, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("a7" + RIGHT));
 
-		testMove = new Move("g7" + LEFT, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("a7" + UP));
 
-		testMove = new Move("a7" + RIGHT, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("b0"));
 
-		testMove = new Move("a7" + UP, testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("a1"));
 
-		testMove = new Move("b0", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g7"));
 
-		testMove = new Move("a1", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("g7u and some more stuff"));
 
-		testMove = new Move("g7", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("a4r"));
 
-		testMove = new Move("g7u and some more stuff", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("3au"));
 
-		testMove = new Move("a4r", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("7b7"));
 
-		testMove = new Move("3au", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertFalse(testMove.isValidString("1a2r"));
 
-		testMove = new Move("7b7", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertTrue(testMove.isValidString("b1"));
+		
+		assertTrue(testMove.isValidString("7b"));
 
-		testMove = new Move("1a2r", testBoard, testPlayer);
-		assertFalse(testMove.isValidString());
+		assertTrue(testMove.isValidString("g2"));
 
-		testMove = new Move("b1", testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
-		testMove = new Move("7b", testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
+		assertTrue(testMove.isValidString("2G"));
 
-		testMove = new Move("g2", testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
-		testMove = new Move("2G", testBoard, testPlayer);
-		assertTrue(testMove.isValidString());
+		assertTrue(testMove.isValidString("6a"));
 
-		testMove = new Move("6a", testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
-		testMove = new Move("A6", testBoard, testPlayer);
-		assertTrue(testMove.isValidString());
+		assertTrue(testMove.isValidString("A6"));
 
-		testMove = new Move("f7", testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
-		testMove = new Move("1f", testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
+		assertTrue(testMove.isValidString("f7"));
 
-		testMove = new Move("A1"+RIGHT, testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
-		testMove = new Move("7A"+RIGHT, testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
+		assertTrue(testMove.isValidString("1f"));
 
-		testMove = new Move("7g"+LEFT, testBoard, testPlayer);
-		assertTrue(testMove.isValidString());
-		testMove = new Move("G7"+LEFT, testBoard, testPlayer);
-		assertTrue(testMove.isValidStirng());
+		assertTrue(testMove.isValidString("A1" + RIGHT));
 
-		testMove = new Move("a7"+DOWN, testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
+		assertTrue(testMove.isValidString("7A"+RIGHT));
 
-		testMove = new Move("1a"+UP, testBoard, testPlayer);
-		assertTrue(testMove.isValidsString());
+		assertTrue(testMove.isValidString("7g"+LEFT));
+		
+		assertTrue(testMove.isValidString("G7"+LEFT));
+
+		assertTrue(testMove.isValidString("a7"+DOWN));
+
+		assertTrue(testMove.isValidString("1a"+UP));
 	}
 	
-	
+	/*
 	@Test
 	void validMoveTest() {
 //		@ToDo MoveAllTokens
 		
 		GameBoard testBoard = new GameBoard(9, 8);
-		testBoard.calculateNewBoard();
 		MoveAllTokens mover = new MoveAllTokens();
 		Player testPlayer = new Player(1);
 		
@@ -219,5 +185,5 @@ class Move1stTest {
 		
 		testMove = new Move("7h", testField);
 	}
-
+*/
 }
