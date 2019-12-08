@@ -14,6 +14,12 @@ class Move1stTest {
 	public static final String DOWN = "d";
 	public static final String LEFT = "l";
 	public static final String RIGHT = "r";
+	
+	public static final int DIRECTION_LEFT = 1;  // laut kommentar eigentlich RIGHT
+	public static final int DIRECTION_RIGHT = 0; // laut kommentar eigentich LEFT
+	public static final int DIRECTION_UP = 3;
+	public static final int DIRECTION_DOWN = 2; 
+
 
 	@Test
 	void validStringTest() {
@@ -97,11 +103,20 @@ class Move1stTest {
 		assertTrue(testMove.isValidString("1a"+UP));
 	}
 	
-	/*
+	
 	@Test
-	void validMoveTest() {
+	void validMoveEmptyBoard() {
+		GameBoard testBoard = new GameBoard(7, 7);
+		assertTrue(new Move(0, 0, DIRECTION_UP, testBoard).isValidMove());
+		assertTrue(new Move(4, 6, DIRECTION_LEFT, testBoard).isValidMove());
+
+		assertTrue(new Move(6, 3, DIRECTION_DOWN, testBoard).isValidMove());
+		assertTrue(new Move(1, 0, DIRECTION_RIGHT, testBoard).isValidMove());
+	}
+	
+	
 //		@ToDo MoveAllTokens
-		
+		/*
 		GameBoard testBoard = new GameBoard(9, 8);
 		MoveAllTokens mover = new MoveAllTokens();
 		Player testPlayer = new Player(1);
