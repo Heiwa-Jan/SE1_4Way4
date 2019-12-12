@@ -79,6 +79,9 @@
 	Jeder Token belegt ein Feld.\\
 	Spielmodus Spieler\,1 gegen Spieler\,2.\\
 	Die Spielregeln werden eingehalten.\\
+	Integritätstest: Es werden zwei KIs instantiiert. Diese müssen dann gegeneinander
+	spielen. Eventuell auftretende Fehler müssen behoben werden, bis beide KIs 
+	problemlos gegeneinander spielen können.
 	
 	\subsubsection{Testende}
 	Die Spielfeldgröße kann im Bereich $7*7$ bis $10*10$ ganzzahlig festgelegt werden.\\
@@ -86,6 +89,8 @@
 	Jeder Token belegt ein Feld.\\
 	Es gibt den Spielmodus Spieler\,1 gegen Spieler\,2.\\
 	Die Spielregeln werden eingehalten.\\
+	Die KIs können problemlos instantiiert werden und spielen gegeneinander. Eine der
+	KIs gewinnt das Spiel. Beide KIs erkennen das Ende des Spiels.
 	
 	\subsubsection{Testabbruch}
 	Die Spielfeldgröße liegt nicht zwischen $7*7$ und $10*10$ oder ist nicht ganzzahlig.\\
@@ -93,5 +98,31 @@
 	Jeder Token belegt mehr oder weniger als ein Feld.\\
 	Spielmodus Spieler\,1 gegen Spieler\,2 existiert nicht.\\
 	Die Spielregeln werden nicht eingehalten.\\		
+	Es treten Fehler auf, die das Spiel sofort beenden. Eine KI denkt, das Ende des Spiels
+	ist erreicht, aber die andere KI spielt weiter. Sonstige Fehler treten auf und das
+	gewünschte Ergebnis wird nicht erzielt.
+	
+	\subsection{Weitere Tests: }
+	
+	Ferner müssen noch zu jeder Methode in jeder Klasse Tests erstellt werden, die die 
+	ordnungsgemäße Funktion der Methoden sicherstellen. Dies wird folgendermaßen geschehen:
+	\begin{enumerate}
+		\item Instantiieren der nötigen Objekte
+		\item Manipulation der jeweiligen Attribute der Objekte
+		\subitem ggf. Herbeiführen von Ausnahmen und behandeln dieser
+		\item Abfragen von Zuständen, ausgelösten Ausnahmen etc.
+		\item Löschen der Objekte
+	\end{enumerate}
+	Die obigen Schritte lassen sich für mehrere Variablen durchführen; dadurch müssen 
+	auch mehrere dieser doch sehr ähnlichen Tests geschrieben werden. Das Prinzip jedoch
+	ändert sich nicht sonderlich. So ergeben sich dann mehrere Testfälle für eine Methode.\\
+	Durch die Tests wird versucht, eine möglichst hohe Testabdeckung zu erlangen, wenngleich
+	eine 100\%\,-\,ige Testabdeckung nahezu unmöglich ist. Das Ziel von Team Jan ist es,
+	eine Testabdeckung von $\geq$ 80\% zu erreichen.\\
+	In diesem Dokument werden die Testmethoden, die sich besonders von den obigen 
+	Standardtests unterscheiden, aufgeführt:\\
+	\subsubsection{Besondere Tests: }
+	
+	*noch keine besonderen Tests eingefügt*
 	
 \end{document}
