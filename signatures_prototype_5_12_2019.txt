@@ -2,12 +2,12 @@
 -> fehlende Setter sind private
 
 GameMain: public static void main(String[] args)
+		  public static boolean isRunning();
 
 GameBoard: public GameBoard(int rows, int columns)
-	   public String printBoard()
-
-	   public int getRows()
-	   public int getColumns()
+    	   public String printBoard()
+	       public int getRows()
+	       public int getColumns()
            public void setField(int row, int column, char token)
            public char getField(int row, int column)
 
@@ -34,6 +34,13 @@ MoveAllTokens: public static GameBoard move(GameBoard currentBoard, Move current
 Player: public char getToken()
         public void setToken(char token)
         public String name()
-	public void setName(String name)
+		public void setName(String name)
 
 PrintCanvas: public static void print(String output)
+
+SearchRow: public SearchRow(GameBoard currentboard, Player player1)
+		   public boolean search()
+		   public GameBoard getCurrentBoard()
+		   public void setCurrentBoard(GameBoard currentBoard)
+		   public Player getPlayer1()
+		   public boolean isPlayer1Won()
