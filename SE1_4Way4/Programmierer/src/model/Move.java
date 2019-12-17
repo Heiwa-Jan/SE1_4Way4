@@ -43,6 +43,12 @@ public class Move {
 		String test = input.next();
 		
 		while(!(this.isValidString(test)) || !(this.isValidMove())) {	//wenn der übergebene String kein valider Zug ist, wird ein neuer angefordert
+			
+			// wieder auf default-Werte zurücksetzen, zur Vermeidung zufällig entstehender Züge
+			this.setColumn(-1);
+			this.setDirection(-1);
+			this.setLine(-1);
+			
 			PrintCanvas.print("Ungültiger Zug");
 			test = input.next();
 		}
@@ -52,9 +58,14 @@ public class Move {
 		//-> Fehlerabfrage + einlesen des neuen Inputs auslagern in Menü?
 	}
 
+	/**
+	 * a new String [input] gets converted to Move object
+	 * @param input
+	 * @return
+	 */
 	public boolean isValidString(String input) {
 
-		if(input.length() >= 2 && input.length() <= 4) {
+		if(input.length() > 2 && input.length() <= 4) {
 
 			// der Zug findet in einer Ecke des Spielfelds statt (am Ende des Zuges wird eine zusätzliche Richtungsangabe gemacht)
 			if(input.length() > 2 && Constants.directions.contains(input.substring(input.length()-1))) {	//die angegebene Richtung einlesen
@@ -143,8 +154,31 @@ public class Move {
 				}
 			}
 
+			else if(input.length() == 3) {
+				if(input.contains("10")) {
+					//wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
+					if(input.contains("a") || input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) {  
+						return false;
+					}
+					
+					this.setDirection(2);	// Richtung des Einwurfs == unten
+					this.setLine(0);	//der Einwurf erfolgt ganz unten
+
+					for(int i = 0; i < input.length(); i++) {	//jede Position der Eingabe auf die Spaltenangabe prüfen
+						if(Constants.coordinatesColumns.contains(input.substring(i, i+1))) {  
+							this.setColumn(Constants.coordinatesColumns.indexOf(input.charAt(i))); //bei gefundener Spaltenangabe: diese zuweisen
+						}
+					}
+					
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
 			// der Zug findet NICHT in einer Ecke des Spielfelds statt (es wird keine zusätzliche Richtungsangabe gemacht)
-			else {
+			else if(input.length() == 2){
 				if(input.length() >= 2 && input.length() <= 3) {	//ohne Richtungsangabe darf die Eingabe nicht 4 Zeichen lang sein
 
 					//wenn ein a enthalten ist, erfolgt der Einwurf von links
@@ -164,7 +198,7 @@ public class Move {
 						}
 					}
 
-					// wenn die höchste Spaltenzahl enthalten ist, erfolgt der Einwurd von rechts
+					// wenn die höchste Spaltenzahl enthalten ist, erfolgt der Einwurf von rechts
 					else if(input.length() == 2 && input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) {	//wenn die Spalte und keine Richtung angegeben ist, keine 10 möglich
 						
 						//wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
@@ -176,7 +210,9 @@ public class Move {
 
 						for(int i = 0; i < input.length(); i++) {	//jede Position der Eingabe auf die Zeilenangabe prüfen
 							if(Constants.coordinatesRows.contains(input.substring(i, i+1))) {  
-								this.setLine(Constants.coordinatesRows.indexOf(input.charAt(i)));  //bei gefundener Zeilenangabe: diese zuweisen
+								if(Constants.coordinatesRows.indexOf(input.substring(i, i+1)) < board.getRows()){
+									this.setLine(Constants.coordinatesRows.indexOf(input.charAt(i)));  //bei gefundener Zeilenangabe: diese zuweisen
+								}
 							}
 						}
 					}
@@ -218,7 +254,7 @@ public class Move {
 					}
 				}
 			}
-		}
+		
 		if(this.getDirection() == -1 || this.getColumn() == -1 || this.getLine() == -1){	//wenn es sich nicht um eine gültige Eingabe handelt: FEHLER
 			return false;
 		}
@@ -233,29 +269,49 @@ public class Move {
 		if(direction == 0) { // == left
 
 			for(int i = 0; i < board.getColumns(); i++) {	//wenn in der betreffenden Reihe noch min. ein Platz frei ist: TRUE
-				if(board.getField(this.getLine(), i) == ' ') {
-					return true;
+				try {
+					if(board.getField(this.getLine(), i) == ' ') {
+						return true;
+					}
+				}
+				catch (ArrayIndexOutOfBoundsException e) {
+					return false;
 				}
 			}
 		}
 		else if(direction == 1) { // == right
 			for(int i = 0; i < board.getColumns(); i++) {	//wenn in der betreffenden Reihe noch min. ein Platz frei ist: TRUE  
-				if(board.getField(line, board.getColumns()-i-1) == ' ') {
-					return true;
+				try {
+					if(board.getField(line, board.getColumns()-i-1) == ' ') {
+						return true;
+					}
+				}
+				catch (ArrayIndexOutOfBoundsException e) {
+					return false;
 				}
 			}
 		}
 		else if(direction == 2) { // == up
 			for(int i = 0; i< board.getRows(); i++) {	//wenn in der betreffenden Spalte noch min. ein Platz frei ist: TRUE
-				if(board.getField(i, column) == ' ') {
-					return true;
+				try {
+					if(board.getField(i, column) == ' ') {
+						return true;
+					}
+				}
+				catch (ArrayIndexOutOfBoundsException e) {
+					return false;
 				}
 			}
 		}
 		else { // == down
 			for(int i = 0; i < board.getRows(); i++) {	//wenn in der betreffenden Spalte noch ein Platz frei ist: TRUE
-				if(board.getField(board.getRows()-i-1, column)  == ' ') {
-					return true;
+				try {
+					if(board.getField(board.getRows()-i-1, column)  == ' ') {
+						return true;
+					}
+				}
+				catch (ArrayIndexOutOfBoundsException e) {
+					return false;
 				}
 			}
 		}
