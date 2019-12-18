@@ -10,8 +10,8 @@ import src.model.Player;
 
 class Move1stTest {
 
-	public static final String UP = "u";
-	public static final String DOWN = "d";
+	public static final String UP = "u";//ist die richtung, aus der eingeworfen wird
+	public static final String DOWN = "d";//nicht die richtung, in die der Token faellt!
 	public static final String LEFT = "l";
 	public static final String RIGHT = "r";
 	
@@ -28,6 +28,7 @@ class Move1stTest {
 		Player testPlayer = new Player("test");
 
 		Move testMove = new Move(testBoard);
+		
 		assertFalse(testMove.isValidString("some string"));
 
 		assertFalse(testMove.isValidString(String.valueOf('a' - 1) + "8"));
@@ -42,22 +43,27 @@ class Move1stTest {
 
 		assertFalse(testMove.isValidString("b0"));
 
-		assertFalse(testMove.isValidString("a1" + DOWN));
+		assertTrue(testMove.isValidString("a1" + DOWN));
 
-		assertFalse(testMove.isValidString("a1" + LEFT));
+		assertTrue(testMove.isValidString("a1" + LEFT));
 
-		assertFalse(testMove.isValidString("g1" + RIGHT));
+		assertTrue(testMove.isValidString("g1" + RIGHT));
 
-		assertFalse(testMove.isValidString("g1" + DOWN));
+		assertTrue(testMove.isValidString("g1" + DOWN));
 
-		assertFalse(testMove.isValidString("g7" + UP));
+		assertTrue(testMove.isValidString("g7" + UP));
 
 		assertFalse(testMove.isValidString("g7" + LEFT));
 
 		assertFalse(testMove.isValidString("a7" + RIGHT));
 
-		assertFalse(testMove.isValidString("a7" + UP));
+		assertTrue(testMove.isValidString("a7" + UP));
 
+		//resetting the Move, because if you don't, 
+		//then it takes the 7 from last turn's Test 
+		//instead of the 0 of the next Move
+		testMove = new Move(testBoard);
+		
 		assertFalse(testMove.isValidString("b0"));
 
 		assertFalse(testMove.isValidString("a1"));
@@ -90,17 +96,17 @@ class Move1stTest {
 
 		assertTrue(testMove.isValidString("1f"));
 
-		assertTrue(testMove.isValidString("A1" + RIGHT));
+		assertFalse(testMove.isValidString("A1" + RIGHT));
 
-		assertTrue(testMove.isValidString("7A"+RIGHT));
+		assertFalse(testMove.isValidString("7A"+RIGHT));
 
-		assertTrue(testMove.isValidString("7g"+LEFT));
+		assertFalse(testMove.isValidString("7g"+LEFT));
 		
-		assertTrue(testMove.isValidString("G7"+LEFT));
+		assertFalse(testMove.isValidString("G7"+LEFT));
 
-		assertTrue(testMove.isValidString("a7"+DOWN));
+		assertFalse(testMove.isValidString("a7"+DOWN));
 
-		assertTrue(testMove.isValidString("1a"+UP));
+		assertFalse(testMove.isValidString("1a"+UP));
 	}
 	
 	
