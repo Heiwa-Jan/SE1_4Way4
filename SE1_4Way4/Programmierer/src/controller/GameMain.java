@@ -3,6 +3,7 @@ package src.controller;
 import java.util.Scanner;
 
 import src.model.GameBoard;
+import src.model.KI;
 import src.model.Menu;
 import src.model.Move;
 import src.model.MoveAllTokens;
@@ -12,7 +13,7 @@ import src.view.PrintCanvas;
 
 public class GameMain {
 
-	private static boolean running = true;
+	private static boolean running;
 
 	public static void main(String[] args) {
 
@@ -22,13 +23,14 @@ public class GameMain {
 		Player player2;
 		Move move;
 		SearchRow searchWin;
+		KI gameKI = null;
 		Scanner input = new Scanner(System.in);
 
 		while(true) { //ist das Spiel zu Ende, Rückkehr ins Menü
 
 			menu.menuStart();	//das Menü ausführen
-			player1 = new Player(menu.getPlayername1());
-			player2 = new Player(menu.getPlayername2());
+			player1 = menu.getPlayer1();
+			player2 = menu.getPlayer2();
 			if(menu.isPlayer1Begins()) {
 				player1.setToken('X');
 				player2.setToken('O');
@@ -40,7 +42,13 @@ public class GameMain {
 
 			board = new GameBoard(menu.getHeight(), menu.getWidth());
 			searchWin = new SearchRow(board, player1);
+			setRunning(true);
 
+			if(menu.getPlayerNumber() == 1) {
+				gameKI = new KI(board);
+			}
+			
+			
 			while(isRunning()) { //während niemand gewonnen hat weiterspielen
 
 				if(menu.isPlayer1Begins()) {
@@ -60,29 +68,48 @@ public class GameMain {
 						break;
 					}
 					
-					//nächster Zug
-					PrintCanvas.print(board.printBoard() + "\n");
-					PrintCanvas.print(player2.getName()+" gib die Koordinaten einer Position ein");
-					PrintCanvas.print("(z.B.: 'a1d' oder '1ad' oder 'a2' oder '2a')");
-					PrintCanvas.print("(r = rechts, l = links, u = oben, d = unten)");
-
-					move = new Move(board);
-					board = MoveAllTokens.move(board, move.getValidMove(), player2.getToken());
-
+					
+					if (menu.getPlayerNumber() == 2) {
+						//nächster Zug
+						PrintCanvas.print(board.printBoard() + "\n");
+						
+						PrintCanvas.print(player2.getName() + " gib die Koordinaten einer Position ein");
+						PrintCanvas.print("(z.B.: 'a1d' oder '1ad' oder 'a2' oder '2a')");
+						PrintCanvas.print("(r = rechts, l = links, u = oben, d = unten)");
+						move = new Move(board);
+						board = MoveAllTokens.move(board, move.getValidMove(), player2.getToken());
+					}
+					else {
+						move = new Move(board);
+						while(!(move.isValidString(gameKI.kiMove()) && move.isValidMove())) {
+							
+						}
+						board = MoveAllTokens.move(board, move, player2.getToken());
+					}
+					
 					searchWin.setCurrentBoard(board);
 					setRunning(!searchWin.search());
-
 				}
 				else {
 					//1. Zug
-					PrintCanvas.print(board.printBoard() + "\n");
-					PrintCanvas.print(player2.getName()+" gib die Koordinaten einer Position ein");
-					PrintCanvas.print("(z.B.: 'a1d' oder '1ad' oder 'a2' oder '2a')");
-					PrintCanvas.print("(r = rechts, l = links, u = oben, d = unten)");
-
-					move = new Move(board);
-					board = MoveAllTokens.move(board, move.getValidMove(), player2.getToken());
-
+					
+					if (menu.getPlayerNumber() == 2) {
+						PrintCanvas.print(board.printBoard() + "\n");
+						PrintCanvas.print(player2.getName()+" gib die Koordinaten einer Position ein");
+						PrintCanvas.print("(z.B.: 'a1d' oder '1ad' oder 'a2' oder '2a')");
+						PrintCanvas.print("(r = rechts, l = links, u = oben, d = unten)");
+	
+						move = new Move(board);
+						board = MoveAllTokens.move(board, move.getValidMove(), player2.getToken());
+					}
+					else {
+						move = new Move(board);
+						while(!(move.isValidString(gameKI.kiMove()) && move.isValidMove())) {
+							
+						}
+						board = MoveAllTokens.move(board, move, player2.getToken());
+					}
+					
 					searchWin.setCurrentBoard(board);
 					setRunning(!searchWin.search());
 
@@ -92,13 +119,15 @@ public class GameMain {
 
 					//nächster Zug
 					PrintCanvas.print(board.printBoard() + "\n");
-					PrintCanvas.print(player1.getName()+" gib die Koordinaten einer Position ein");
+					
+					PrintCanvas.print(player1.getName() + " gib die Koordinaten einer Position ein");
 					PrintCanvas.print("(z.B.: 'a1d' oder '1ad' oder 'a2' oder '2a')");
 					PrintCanvas.print("(r = rechts, l = links, u = oben, d = unten)");
-
+					
 					move = new Move(board);
 					board = MoveAllTokens.move(board, move.getValidMove(), player1.getToken());
-
+				
+				
 					searchWin.setCurrentBoard(board);
 					setRunning(!searchWin.search());
 

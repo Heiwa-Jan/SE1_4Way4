@@ -16,45 +16,100 @@ public class SearchRow {
 	 */
 	public boolean search() {
 
-		for(int i = 0; i < currentBoard.getRows()-3; i++) {		//Ränder der Arrays dürfen nicht überschritten werden!
-			for(int j = 0; j < currentBoard.getColumns()-3; j++) {
+		for(int i = 0; i < currentBoard.getRows(); i++) {		//Ränder der Arrays dürfen nicht überschritten werden!
+			for(int j = 0; j < currentBoard.getColumns(); j++) {
 
 				//wenn Spieler 1 vier in einer Reihe hat, true setzen ( false = Spieler 2 gewinnt)
 				if(player1.getToken() == 'X') {
-					if((currentBoard.getField(j, i) == 'X' ) & (currentBoard.getField(j+1,i) == 'X') & (currentBoard.getField(j+2,i) == 'X') & (currentBoard.getField(j+3,i) == 'X')
-							|| ((currentBoard.getField(i, j) == 'X' ) & (currentBoard.getField(i,j+1) == 'X') & (currentBoard.getField(i,j+2) == 'X') & (currentBoard.getField(i,j+3) == 'X'))
-							|| ((currentBoard.getField(j, j) == 'X' ) & (currentBoard.getField(j+1,j+1) == 'X') & (currentBoard.getField(j+2,j+2) == 'X') & (currentBoard.getField(j+3,j+3) == 'X'))) {
-
+					if((j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i, j+1) == 'X' && currentBoard.getField(i, j+2) == 'X' && currentBoard.getField(i, j+3) == 'X'))) {
+						
 						this.setPlayer1Won(true);
 						return true;
 					}
-
-					if((currentBoard.getField(j, i) == 'O' ) & (currentBoard.getField(j+1,i) == 'O') & (currentBoard.getField(j+2,i) == 'O') & (currentBoard.getField(j+3,i) == 'O')
-							|| 	((currentBoard.getField(i, j) == 'O' ) & (currentBoard.getField(i,j+1) == 'O') & (currentBoard.getField(i,j+2) == 'O') & (currentBoard.getField(i,j+3) == 'O'))
-							|| ((currentBoard.getField(j, j) == 'O' ) & (currentBoard.getField(j+1,j+1) == 'O') & (currentBoard.getField(j+2,j+2) == 'O') & (currentBoard.getField(j+3,j+3) == 'O'))) {
-
+					
+					if((i < currentBoard.getRows()-3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i+1, j) == 'X' && currentBoard.getField(i+2,  j) == 'X' && currentBoard.getField(i+3, j) == 'X'))) {
+						
+						this.setPlayer1Won(true);
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i+1, j+1) == 'X' && currentBoard.getField(i+2, j+2) == 'X' && currentBoard.getField(i+3, j+3) == 'X'))) {
+						
+						this.setPlayer1Won(true);
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j >= 3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i+1, j-1) == 'X' && currentBoard.getField(i+2, j-2) == 'X' && currentBoard.getField(i+3, j-3) == 'X'))) {
+						
+						this.setPlayer1Won(true);
+						return true;
+					}
+					//
+					if((j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i, j+1) == 'O' && currentBoard.getField(i, j+2) == 'O' && currentBoard.getField(i, j+3) == 'O'))) {
+						
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i+1, j) == 'O' && currentBoard.getField(i+2,  j) == 'O' && currentBoard.getField(i+3, j) == 'O'))) {
+						
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i+1, j+1) == 'O' && currentBoard.getField(i+2, j+2) == 'O' && currentBoard.getField(i+3, j+3) == 'O'))) {
+						
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j >= 3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i+1, j-1) == 'O' && currentBoard.getField(i+2, j-2) == 'O' && currentBoard.getField(i+3, j-3) == 'O'))) {
+						
 						return true;
 					}
 				}
-
-	
+				
 				if(player1.getToken() == 'O') {
-					if((currentBoard.getField(j, i) == 'X' ) & (currentBoard.getField(j+1,i) == 'X') & (currentBoard.getField(j+2,i) == 'X') & (currentBoard.getField(j+3,i) == 'X')
-							|| ((currentBoard.getField(i, j) == 'X' ) & (currentBoard.getField(i,j+1) == 'X') & (currentBoard.getField(i,j+2) == 'X') & (currentBoard.getField(i,j+3) == 'X'))
-							|| ((currentBoard.getField(j, j) == 'X' ) & (currentBoard.getField(j+1,j+1) == 'X') & (currentBoard.getField(j+2,j+2) == 'X') & (currentBoard.getField(j+3,j+3) == 'X'))) {
-
-
-						return true;
-					}
-			
-					if((currentBoard.getField(j, i) == 'O' ) & (currentBoard.getField(j+1,i) == 'O') & (currentBoard.getField(j+2,i) == 'O') & (currentBoard.getField(j+3,i) == 'O')
-							|| 	((currentBoard.getField(i, j) == 'O' ) & (currentBoard.getField(i,j+1) == 'O') & (currentBoard.getField(i,j+2) == 'O') & (currentBoard.getField(i,j+3) == 'O'))
-							|| ((currentBoard.getField(j, j) == 'O' ) & (currentBoard.getField(j+1,j+1) == 'O') & (currentBoard.getField(j+2,j+2) == 'O') & (currentBoard.getField(j+3,j+3) == 'O'))) {
-
+					if((j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i, j+1) == 'O' && currentBoard.getField(i, j+2) == 'O' && currentBoard.getField(i, j+3) == 'O'))) {
+						
 						this.setPlayer1Won(true);
 						return true;
-					}	
-
+					}
+					
+					if((i < currentBoard.getRows()-3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i+1, j) == 'O' && currentBoard.getField(i+2,  j) == 'O' && currentBoard.getField(i+3, j) == 'O'))) {
+						
+						this.setPlayer1Won(true);
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i+1, j+1) == 'O' && currentBoard.getField(i+2, j+2) == 'O' && currentBoard.getField(i+3, j+3) == 'O'))) {
+						
+						this.setPlayer1Won(true);
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j >= 3) && ((currentBoard.getField(i,j) == 'O' && currentBoard.getField(i+1, j-1) == 'O' && currentBoard.getField(i+2, j-2) == 'O' && currentBoard.getField(i+3, j-3) == 'O'))) {
+						
+						this.setPlayer1Won(true);
+						return true;
+					}
+					//
+					if((j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i, j+1) == 'X' && currentBoard.getField(i, j+2) == 'X' && currentBoard.getField(i, j+3) == 'X'))) {
+						
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i+1, j) == 'X' && currentBoard.getField(i+2,  j) == 'X' && currentBoard.getField(i+3, j) == 'X'))) {
+						
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j < currentBoard.getColumns()-3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i+1, j+1) == 'X' && currentBoard.getField(i+2, j+2) == 'X' && currentBoard.getField(i+3, j+3) == 'X'))) {
+						
+						return true;
+					}
+					
+					if((i < currentBoard.getRows()-3) && (j >= 3) && ((currentBoard.getField(i,j) == 'X' && currentBoard.getField(i+1, j-1) == 'X' && currentBoard.getField(i+2, j-2) == 'X' && currentBoard.getField(i+3, j-3) == 'X'))) {
+						
+						return true;
+					}
 				}
 			}
 		}

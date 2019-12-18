@@ -1,5 +1,5 @@
--> die hier beschriebenen Signaturen können sich noch ändern!
--> fehlende Setter sind private
+-> die hier beschriebenen Signaturen koennen sich noch aendern!
+-> fehlende Setter (und Methoden) sind private
 
 GameMain: public static void main(String[] args)
 		  public static boolean isRunning();
@@ -19,6 +19,8 @@ Menu: public void menuStart()
       public int getHeight()
       public int getPlayerNumber()
       public int getDifficulty()
+      public Player getPlayer1()
+      public Player getPlayer2()
 
 Move: public Move(int row, int column, int direction, GameBoard board) -> only for debugging
       public Move(GameBoard currentBoard)
@@ -31,10 +33,13 @@ Move: public Move(int row, int column, int direction, GameBoard board) -> only f
 
 MoveAllTokens: public static GameBoard move(GameBoard currentBoard, Move currentMove, char token)
 
-Player: public char getToken()
+Player: public Player(String playerName, boolean isKI)
+	    public char getToken()
         public void setToken(char token)
         public String name()
 		public void setName(String name)
+		public boolean isKI()
+		public void setKI(boolean isKI)
 
 PrintCanvas: public static void print(String output)
 
@@ -44,3 +49,6 @@ SearchRow: public SearchRow(GameBoard currentboard, Player player1)
 		   public void setCurrentBoard(GameBoard currentBoard)
 		   public Player getPlayer1()
 		   public boolean isPlayer1Won()
+		   
+KI: public String kiMove()
+    public GameBoard getBoard()

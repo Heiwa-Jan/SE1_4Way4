@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import src.model.Player;
 import src.view.PrintCanvas;
+import test.KI;
 
 @SuppressWarnings("unused")
 public class Menu {
@@ -19,6 +20,9 @@ public class Menu {
 	private String playername1;	
 	private String playername2;
 	private boolean player1Begins = true;
+//	private KI gameKI;	--> in GameMain
+	private Player player1;
+	private Player player2;
 	
 	Scanner input = new Scanner(System.in);
 
@@ -31,7 +35,7 @@ public class Menu {
 		this.readPlayerNames();
 		this.readBoardSize();
 		this.whoStarts();
-//		instantiatePlayers();
+		this.instantiatePlayers();
 //		instantiateGameboard();
 //		instantiateStartGame();
 		
@@ -54,6 +58,11 @@ public class Menu {
 			if(this.getPlayerNumber() == 1 || this.getPlayerNumber() == 2) {
 				inputInvalid = false;
 			}
+//			if(this.getPlayerNumber()==1) {
+//				// Einzelspieler Auswahl um gegen KI zu spielen
+////				setGameKI(new KI(this.getHeight(),this.getWidth()));
+//				
+//			}
 			else {
 				PrintCanvas.print("Bitte 1 oder 2 angeben!\n");
 			}
@@ -65,11 +74,12 @@ public class Menu {
 	 */
 	private void readPlayerNames() {
 		if(this.playerNumber == 1) {	//wenn ein Spieler gegen die KI spielt, muss dieser seinen Namen angeben
-//			PrintCanvas.print("Bitte gib deinen Namen ein: ");
-//			this.setPlayername1(input.next());
+			PrintCanvas.print("Bitte gib deinen Namen ein: ");
+			this.setPlayername1(input.next());
+			this.setPlayername2("KI");
 			
-			PrintCanvas.print("In dieser Version noch nicht verfügbar\n");	//solange keine KI implementiert ist, ist 2 Spieler default
-			this.setPlayerNumber(2);
+//			PrintCanvas.print("In dieser Version noch nicht verfügbar\n");	//solange keine KI implementiert ist, ist 2 Spieler default
+//			this.setPlayerNumber(2);
 			
 		}
 		if(this.playerNumber == 2) {	//wenn 2 Spieler spielen, müssen beide ihre Namen angeben
@@ -148,13 +158,16 @@ public class Menu {
 	 */
 	private void instantiatePlayers() {
 		if(this.playerNumber == 1) {
-			Player Player1 = new Player(this.playername1);	// vorher: parameterloser Konstruktor
+			player1 = new Player(this.playername1, false);	// vorher: parameterloser Konstruktor
+			player2 = new Player(this.playername2,true);
 		}
 		if(this.playerNumber == 2) {
-			Player Player1 = new Player(this.playername1);
-			Player Player2 = new Player(this.playername2);
+			player1 = new Player(this.playername1, false);
+			player2 = new Player(this.playername2, false);
 			}
 	}
+
+	
 
 	/**
 	 * gets user input to decide, which player starts
@@ -164,7 +177,7 @@ public class Menu {
 		
 		PrintCanvas.print("Wer beginnt? Spieler 1 oder 2?");
 		
-		while (inputInvalid) {	//wenn nich 1 oder 2 eingegeben wird, wird ein neuer verlangt, bis 1/2 angegeben wurde
+		while (inputInvalid) {	//wenn nicht 1 oder 2 eingegeben wird, wird ein neuer verlangt, bis 1/2 angegeben wurde
 			
 			int next = input.nextInt();
 			if(next == 1) {
@@ -177,9 +190,7 @@ public class Menu {
 			else {
 				PrintCanvas.print("Bitte nur 1 oder 2");
 			}
-		}
-		
-		
+		}	
 	}
 
 //
@@ -244,6 +255,29 @@ public class Menu {
 
 	private void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
+	}
+	
+//	public KI getGameKI() {
+//		return gameKI;
+//	}
+//
+//	public void setGameKI(KI gameKI) {
+//		this.gameKI = gameKI;
+//	}
+	public Player getPlayer1() {
+		return player1;
+	}
+
+	public void setPlayer1(Player player1) {
+		this.player1 = player1;
+	}
+
+	public Player getPlayer2() {
+		return player2;
+	}
+
+	public void setPlayer2(Player player2) {
+		this.player2 = player2;
 	}
 	
 //	public boolean isRunning() {
