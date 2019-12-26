@@ -25,7 +25,7 @@ class Move1stTest {
 	void validStringTest() {
 		GameBoard testBoard = new GameBoard(7, 7);
 		
-		Player testPlayer = new Player("test");
+		Player testPlayer = new Player("test", false);
 
 		Move testMove = new Move(testBoard);
 		
