@@ -34,6 +34,7 @@ class SearchRow1stTest {
 		//Test auf horizontal
 		assertTrue(new SearchRow(testBoard, testPlayer).search());
 		
+		//Test auf diagonal
 		testBoard = new GameBoard(7, 7);
 		testBoard = MoveAllTokens.move(testBoard, new Move(0, 0, 3, testBoard), 'O');
 		testBoard = MoveAllTokens.move(testBoard, new Move(0, 0, 3, testBoard), 'O');
@@ -49,6 +50,25 @@ class SearchRow1stTest {
 		
 		testBoard = MoveAllTokens.move(testBoard, new Move(0, 3, 3, testBoard), 'X');
 		
+		assertTrue(new SearchRow(testBoard, testPlayer).search());
+		
+		
+		//Test auf diagonal (andere Richtung)
+		testBoard = new GameBoard(7, 7);
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 0, 3, testBoard), 'X');
+
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 1, 3, testBoard), 'O');
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 1, 3, testBoard), 'X');
+
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 1, 3, testBoard), 'O');
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 2, 3, testBoard), 'O');
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 2, 3, testBoard), 'X');
+				
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 1, 3, testBoard), 'O');
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 1, 3, testBoard), 'O');
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 1, 3, testBoard), 'O');
+		testBoard = MoveAllTokens.move(testBoard, new Move(0, 3, 3, testBoard), 'X');
+				
 		assertTrue(new SearchRow(testBoard, testPlayer).search());
 	}
 	

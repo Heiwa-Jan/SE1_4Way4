@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import src.model.GameBoard;
 import src.model.Move;
-import src.model.Player;
 
 class Move1stTest {
 
@@ -15,8 +14,8 @@ class Move1stTest {
 	public static final String LEFT = "l";
 	public static final String RIGHT = "r";
 	
-	public static final int DIRECTION_LEFT = 1;  // laut kommentar eigentlich RIGHT
-	public static final int DIRECTION_RIGHT = 0; // laut kommentar eigentich LEFT
+	public static final int DIRECTION_LEFT = 1;
+	public static final int DIRECTION_RIGHT = 0;
 	public static final int DIRECTION_UP = 3;
 	public static final int DIRECTION_DOWN = 2; 
 
@@ -24,9 +23,7 @@ class Move1stTest {
 	@Test
 	void validStringTest() {
 		GameBoard testBoard = new GameBoard(7, 7);
-		
-		Player testPlayer = new Player("test", false);
-
+	
 		Move testMove = new Move(testBoard);
 		
 		assertFalse(testMove.isValidString("some string"));
@@ -42,22 +39,10 @@ class Move1stTest {
 		assertFalse(testMove.isValidString("g8"));
 
 		assertFalse(testMove.isValidString("b0"));
-
-		assertTrue(testMove.isValidString("a1" + DOWN));
-
-		assertTrue(testMove.isValidString("a1" + LEFT));
-
-		assertTrue(testMove.isValidString("g1" + RIGHT));
-
-		assertTrue(testMove.isValidString("g1" + DOWN));
-
-		assertTrue(testMove.isValidString("g7" + UP));
-
+		
 		assertFalse(testMove.isValidString("g7" + LEFT));
 
 		assertFalse(testMove.isValidString("a7" + RIGHT));
-
-		assertTrue(testMove.isValidString("a7" + UP));
 
 		//resetting the Move, because if you don't, 
 		//then it takes the 7 from last turn's Test 
@@ -80,6 +65,34 @@ class Move1stTest {
 
 		assertFalse(testMove.isValidString("1a2r"));
 
+		assertFalse(testMove.isValidString("A1" + RIGHT));
+
+		assertFalse(testMove.isValidString("7A"+RIGHT));
+
+		assertFalse(testMove.isValidString("7g"+LEFT));
+		
+		assertFalse(testMove.isValidString("G7"+LEFT));
+
+		assertFalse(testMove.isValidString("a7"+DOWN));
+
+		assertFalse(testMove.isValidString("1a"+UP));
+		
+		
+		//test auf string-ende		
+		assertFalse(testMove.isValidString("\0" + "\0"));
+		
+		
+		//test auf nicht-ascii-zeichen
+		assertFalse(testMove.isValidString("üß"));
+		
+		assertFalse(testMove.isValidString("šč"));
+		
+		assertFalse(testMove.isValidString("дб"));
+		
+		assertFalse(testMove.isValidString("пг"));
+		
+		
+		//valid moves here
 		assertTrue(testMove.isValidString("b1"));
 		
 		assertTrue(testMove.isValidString("7b"));
@@ -95,18 +108,18 @@ class Move1stTest {
 		assertTrue(testMove.isValidString("f7"));
 
 		assertTrue(testMove.isValidString("1f"));
-
-		assertFalse(testMove.isValidString("A1" + RIGHT));
-
-		assertFalse(testMove.isValidString("7A"+RIGHT));
-
-		assertFalse(testMove.isValidString("7g"+LEFT));
 		
-		assertFalse(testMove.isValidString("G7"+LEFT));
+		assertTrue(testMove.isValidString("a1" + DOWN));
 
-		assertFalse(testMove.isValidString("a7"+DOWN));
+		assertTrue(testMove.isValidString("a1" + LEFT));
 
-		assertFalse(testMove.isValidString("1a"+UP));
+		assertTrue(testMove.isValidString("g1" + RIGHT));
+
+		assertTrue(testMove.isValidString("g1" + DOWN));
+
+		assertTrue(testMove.isValidString("g7" + UP));
+
+		assertTrue(testMove.isValidString("a7" + UP));
 	}
 	
 	
