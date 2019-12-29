@@ -304,3 +304,5 @@ public class Menu {
 //		this.currentStep = currentStep;
 //	}
 }
+
+//TODO: input ueber gemeinsame Klasse, outputs als toString() die den jetzigen Schritt prueft

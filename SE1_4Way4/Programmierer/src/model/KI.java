@@ -65,3 +65,7 @@ public class KI {
 		this.board = board;
 	}
 }
+//TODO 
+//mit Grundlage von 4 Gewinnt KI implementieren
+//difficulty und verschiedene kiMove-Methoden fuer die Schwierigkeitsgrade
+//erkennung von kleineren Reihen hier oder in SearchRow fuer Zugbewertung

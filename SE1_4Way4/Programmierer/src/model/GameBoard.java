@@ -112,3 +112,5 @@ public class GameBoard {
 		return board[row][column];
 	}
 }
+
+//TODO einheitlich toString() statt printBoard()

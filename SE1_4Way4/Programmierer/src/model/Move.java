@@ -10,6 +10,7 @@ public class Move {
 	private int column = -1;
 	private int direction = -1;
 	private GameBoard board;
+	private String moveString = null;
 	
 
 	
@@ -27,10 +28,20 @@ public class Move {
 		this.board = board;
 	}
 	
+	
+	public Move(GameBoard board, String move) {
+		this.board = board;
+		this.moveString = move;
+		
+		//direkt getValidMove() im Konstruktor aufrufen?
+		//yes
+	}
+	
 	public Move(GameBoard board) {
 		this.board = board;
 		
 		//direkt getValidMove() im Konstruktor aufrufen?
+		//yes
 	}
 	
 	/**
@@ -40,9 +51,9 @@ public class Move {
 	 */
 	public Move getValidMove() {
 		Scanner input = new Scanner(System.in);
-		String test = input.next();
+		moveString = input.next();
 		
-		while(!(this.isValidString(test)) || !(this.isValidMove())) {	//wenn der übergebene String kein valider Zug ist, wird ein neuer angefordert
+		while(!(this.isValidMove())) {	//wenn der übergebene String kein valider Zug ist, wird ein neuer angefordert
 			
 			// wieder auf default-Werte zurücksetzen, zur Vermeidung zufällig entstehender Züge
 			this.setColumn(-1);
@@ -50,7 +61,7 @@ public class Move {
 			this.setLine(-1);
 			
 			PrintCanvas.print("Ungültiger Zug");
-			test = input.next();
+			moveString = input.next();
 		}
 		return this;
 		
@@ -266,7 +277,9 @@ public class Move {
 	 * @return boolean true if token can be placed
 	 */
 	public boolean isValidMove() {
-		if(direction == 0) { // == left
+		if(!isValidString(this.moveString)) {
+			return false;
+		} else if(direction == 0) { // == left
 
 			for(int i = 0; i < board.getColumns(); i++) {	//wenn in der betreffenden Reihe noch min. ein Platz frei ist: TRUE
 				try {
@@ -345,3 +358,11 @@ public class Move {
 		this.direction = direction;
 	}
 }
+
+//Aenderung 29.12. Lejana:
+//isValisString wird jetzt von vorgegebener Methode isValidMove() mit aufgerufen
+//Konstruktor mit String, den GameMain fuer die KI nutzt
+
+//TODO
+//input ueber controller, getValidMove() anpassen
+//getValidMove() am besten gleich im Konstruktor rufen

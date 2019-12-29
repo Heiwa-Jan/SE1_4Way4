@@ -79,9 +79,11 @@ public class GameMain {
 						move = new Move(board);
 						board = MoveAllTokens.move(board, move.getValidMove(), player2.getToken());
 					}
-					else {
-						move = new Move(board);
-						while(!(move.isValidString(gameKI.kiMove()) && move.isValidMove())) {
+					else { 
+						//KI
+						//geandert: kiMove() im Konstruktor
+						move = new Move(board, gameKI.kiMove());
+						while(!move.isValidMove()) {
 							
 						}
 						board = MoveAllTokens.move(board, move, player2.getToken());
@@ -91,7 +93,7 @@ public class GameMain {
 					setRunning(!searchWin.search());
 				}
 				else {
-					//1. Zug
+					//1. Zug, 2. Spieler beginnt
 					
 					if (menu.getPlayerNumber() == 2) {
 						PrintCanvas.print(board.printBoard() + "\n");
@@ -102,9 +104,10 @@ public class GameMain {
 						move = new Move(board);
 						board = MoveAllTokens.move(board, move.getValidMove(), player2.getToken());
 					}
-					else {
-						move = new Move(board);
-						while(!(move.isValidString(gameKI.kiMove()) && move.isValidMove())) {
+					else {			
+						//KI
+						move = new Move(board, gameKI.kiMove());
+						while(!move.isValidMove()) {
 							
 						}
 						board = MoveAllTokens.move(board, move, player2.getToken());
@@ -156,4 +159,13 @@ public class GameMain {
 	private static void setRunning(boolean running) {
 		GameMain.running = running;
 	}
+	
+	//TODO
+	//GameMain in Game und Controller/Wrapperklasse zerlegen, Menuaufruf nicht aus Game
+	//Pruefen ob Turnier gegen anderes Spiel stattfindet als erstes in isRunning
+	//whoWon()
+	//yourMove() myMove() hinzufuegen
+	//Ausgaben alle ueber view, fehlende toString()s anlegen
+	
+	//siehe Menu, Gameboard, Move, KI
 }
