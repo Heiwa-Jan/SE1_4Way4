@@ -1,4 +1,4 @@
-package model;
+package test;
 
 /*
  *  Instanzvariable isKI + getter & setter

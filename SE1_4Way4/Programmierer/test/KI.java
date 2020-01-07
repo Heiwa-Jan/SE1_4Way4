@@ -1,17 +1,17 @@
-package model;
+package test;
 
 import java.lang.Math;
 
-import control.GameMain;
-import model.Menu;
-import model.GameBoard;
-import model.Constants;
+import src.controller.GameMain;
+import src.model.Menu;
+import src.model.GameBoard;
+import src.model.Constants;
 
 public class KI {
 	private int currentWidth;
 	private int currentHeight;
 
-	KI(int heigth,int width){
+	public KI(int heigth,int width){
 		setCurrentHight(heigth);
 		setCurrentWidth(width);
 	}

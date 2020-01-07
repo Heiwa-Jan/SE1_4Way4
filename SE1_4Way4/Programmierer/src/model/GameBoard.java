@@ -4,7 +4,6 @@ public class GameBoard {
 	private char[][] board;  // = fields
 	int rows;  // = height
 	int columns;  // = width
-
 	/**
 	 * initialize a new, empty game board of size [rows] x [columns]
 	 * @param rows
@@ -85,26 +84,37 @@ public class GameBoard {
 		return buildBoard.toString();
 		
 	}
+	/**
+	 * Kopiert die aktuelle SpielSituation und gibt diese zurück
+	 * 
+	 * @return spielKopie
+	 */
+	
+	public GameBoard copy() {
+		GameBoard copy = new GameBoard(this.getRows(), this.getColumns());
+		for (int x = 0; x < copy.getColumns(); x++) {
+			for (int y = 0; y < copy.getRows(); y++) {
+				copy.setField(y, x, this.getField(y,x));
+			}
+		}
+		return copy;
+	}
+
 	
 	
 	// Getter und Setter:
-
 	public int getRows() {
 		return rows;
 	}
-
 	private void setRows(int rows) {
 		this.rows = rows;
 	}
-
 	public int getColumns() {
 		return columns;
 	}
-
 	private void setColumns(int columns) {
 		this.columns = columns;
 	}
-
 	public void setField(int row, int column, char token) {
 		this.board[row][column] = token;
 	}
@@ -112,3 +122,5 @@ public class GameBoard {
 		return board[row][column];
 	}
 }
+
+//TODO einheitlich toString() statt printBoard()

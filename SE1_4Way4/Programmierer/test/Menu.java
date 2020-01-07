@@ -1,8 +1,8 @@
-package model;
+package test;
 	import java.util.Scanner;
 
-	import model.Player;
-	import view.PrintCanvas;
+	import src.model.Player;
+	import src.view.PrintCanvas;
 /*
  *	Line 78+- Readplayername if(playernumber==1)
  *	Ki Aufruf hinzugefügt
