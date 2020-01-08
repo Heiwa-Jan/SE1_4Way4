@@ -21,15 +21,19 @@ class SearchRow1stTest {
 		Player testPlayer = new Player("Player_1", false);
 		testPlayer.setToken('X');
 
+		//einwerfen der Tokens
 		for(int i = 0; i < 4; i++) 
 			testBoard = MoveAllTokens.move(testBoard, new Move(1, 2, 3, testBoard), 'X');//1bu
 
 		//Test auf vertikal
 		assertTrue(new SearchRow(testBoard, testPlayer).search());
 
+		
+		//clear board
 		testBoard = new GameBoard(7, 7);
+		//einwerfen der Tokens
 		for(int i = 0; i < 4; i++) 
-			testBoard = MoveAllTokens.move(testBoard, new Move(2, 1, 0, testBoard), 'X');//2al
+			testBoard = MoveAllTokens.move(testBoard, new Move(2, 1, 0, testBoard), 'X');//2ar
 
 		//Test auf horizontal
 		assertTrue(new SearchRow(testBoard, testPlayer).search());

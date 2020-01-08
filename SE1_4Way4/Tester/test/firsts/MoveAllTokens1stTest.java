@@ -231,5 +231,71 @@ class MoveAllTokens1stTest {
 		assertEquals(boardState, testBoard.printBoard());
 		
 	}
+	
+	@Test
+	void MoveAllTokensTest() {
+		GameBoard testBoard = new GameBoard(7, 7);
+		testBoard.setField(0, 0, 'X');
+		testBoard.setField(1, 0, 'O');
+		testBoard.setField(2, 0, 'X');
+		testBoard.setField(3, 0, 'O');
+		testBoard.setField(4, 0, 'X');
+		testBoard.setField(5, 0, 'O');
+		testBoard.setField(6, 0, 'X');
+		
+		testBoard.setField(0, 1, 'O');
+		testBoard.setField(1, 1, 'X');
+		testBoard.setField(2, 1, 'O');
+		testBoard.setField(3, 1, 'X');
+		testBoard.setField(4, 1, 'O');
+		testBoard.setField(5, 1, 'X');
+		
+		
+		//testBoard looks like this now
+		String stringBoard =  
+		   "    a   b   c   d   e   f   g   \n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 7| X |   |   |   |   |   |   |  7\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 6| O | X |   |   |   |   |   |  6\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 5| X | O |   |   |   |   |   |  5\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 4| O | X |   |   |   |   |   |  4\n"
+		 + "  +---+---+---+---+---+---+---+\n" 
+		 + " 3| X | O |   |   |   |   |   |  3\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 2| O | X |   |   |   |   |   |  2\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 1| X | O |   |   |   |   |   |  1\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + "    a   b   c   d   e   f   g   ";
+
+		assertEquals(testBoard.printBoard(), stringBoard);
+		
+		//throwing an 'O'-token from left to right, in order to move all tokens right
+		testBoard = MoveAllTokens.move(testBoard, new Move(6, 1, 0, testBoard), 'O');
+		
+		stringBoard =
+		   "    a   b   c   d   e   f   g   \n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 7|   |   |   |   |   | O | X |  7\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 6|   |   |   |   |   | O | X |  6\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 5|   |   |   |   |   | X | O |  5\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 4|   |   |   |   |   | O | X |  4\n"
+		 + "  +---+---+---+---+---+---+---+\n" 
+		 + " 3|   |   |   |   |   | X | O |  3\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 2|   |   |   |   |   | O | X |  2\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + " 1|   |   |   |   |   | X | O |  1\n"
+		 + "  +---+---+---+---+---+---+---+\n"
+		 + "    a   b   c   d   e   f   g   ";
+		 
+		assertEquals(testBoard.printBoard(), stringBoard);
+	}	
 
 }

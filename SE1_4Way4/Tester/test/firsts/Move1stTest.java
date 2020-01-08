@@ -6,19 +6,32 @@ import org.junit.jupiter.api.Test;
 
 import src.model.GameBoard;
 import src.model.Move;
+import src.model.MoveAllTokens;
 
 class Move1stTest {
 
-	public static final String UP = "u";//ist die richtung, aus der eingeworfen wird
-	public static final String DOWN = "d";//nicht die richtung, in die der Token faellt!
-	public static final String LEFT = "l";
-	public static final String RIGHT = "r";
+	//this may seem weird, but it is indeed intended this way:
 	
-	public static final int DIRECTION_LEFT = 1;
+	/** The token will fall left */
+	public static final String RIGHT = "r";
+	/** The token will fall right */
+	public static final String LEFT = "l";
+	/** The token will fall up */
+	public static final String DOWN = "d";
+	/** The token will fall down */
+	public static final String UP = "u";
+	
+	
+	/** The token will fall left */
 	public static final int DIRECTION_RIGHT = 0;
-	public static final int DIRECTION_UP = 3;
+	/** The token will fall right */
+	public static final int DIRECTION_LEFT = 1;
+	/** The token will fall up */
 	public static final int DIRECTION_DOWN = 2; 
-
+	/** The token will fall down */
+	public static final int DIRECTION_UP = 3;
+	
+	
 
 	@Test
 	void validStringTest() {
@@ -44,8 +57,8 @@ class Move1stTest {
 
 		assertFalse(testMove.isValidString("a7" + RIGHT));
 
-		//resetting the Move, because if you don't, 
-		//then it takes the 7 from last turn's Test 
+		//resetting the Move's memory, because if you don't, 
+		//it takes the 7 from last turn's Test case 
 		//instead of the 0 of the next Move
 		testMove = new Move(testBoard);
 		
@@ -124,100 +137,15 @@ class Move1stTest {
 	
 	
 	@Test
-	void validMoveEmptyBoard() {
+	void validMoveEmptyBoard() {//testing out the possible directions from the borders
 		GameBoard testBoard = new GameBoard(7, 7);
 		assertTrue(new Move(0, 0, DIRECTION_UP, testBoard).isValidMove());
 		assertTrue(new Move(4, 6, DIRECTION_LEFT, testBoard).isValidMove());
 
 		assertTrue(new Move(6, 3, DIRECTION_DOWN, testBoard).isValidMove());
 		assertTrue(new Move(1, 0, DIRECTION_RIGHT, testBoard).isValidMove());
+		
+		//is this intended to work?
+		assertTrue(new Move(0, 0, DIRECTION_DOWN, testBoard).isValidMove());
 	}
-	
-	
-//		@ToDo MoveAllTokens
-		/*
-		GameBoard testBoard = new GameBoard(9, 8);
-		MoveAllTokens mover = new MoveAllTokens();
-		Player testPlayer = new Player(1);
-		
-		
-		for(int i = 0; i < 9; i++) {
-			mover.move(testBoard, new Move("a1"+UP, testBoard, testPlayer));
-		}
-		for(int i = 0; i < 8; i++)
-			mover.move(testBoard, new Move("a2", testBoard, testPlayer));
-		
-		
-		String testField =  "   a  b  c  d  e  f  g  h   \n"
-				 		  + " +------------------------+ \n"
-				 		  + "9| X  O                   |9\n"
-				 		  + "8| O  X                   |8\n"
-				 		  + "7| X  X                   |7\n"
-				 		  + "6| O  O                   |6\n"
-				 		  + "5| X  X                   |5\n"
-				 		  + "4| O  X                   |4\n"
-				 		  + "3| X  O                   |3\n"
-				 		  + "2| O  X                   |2\n"
-				 		  + "1| X                      |1\n"
-				 		  + " +------------------------+ \n"
-				 		  + "   a  b  c  d  e  f  g  h   \n";
-		
-		assertEquals(testField, testBoard.toString());
-		
-		Move testMove = new Move("a1"+UP, testBoard, testPlayer);
-		assertFalse(testMove.isValidMove());
-		
-		testMove = new Move("a1"+DOWN, testBoard, testPlayer);
-		assertFalse(testMove.isValidMove());
-		
-		testMove = new Move("b9", testBoard, testPlayer);
-		assertTrue(testMove.isValidMove());
-		
-		testMove = new Move("a5", testBoard, testPlayer);
-		assertTrue(testMove.isValidMove());
-
-		testBoard.calculateNewGameBoard();
-		
-		for(int i = 0; i < 9; i++) 
-			mover.move(testBoard, new Move("h1"+UP, testBoard, testPlayer));	
-		mover.move(testBoard, new Move("a1"+RIGHT, testBoard, testPlayer));
-		mover.move(testBoard, new Move("a9"+RIGHT, testBoard, testPlayer));
-		
-		for(int i = 2; i < 9; i++)
-			mover.move(testBoard, new Move("a"+i, testBoard, testPlayer));
-		
-		testField = "   a  b  c  d  e  f  g  h   \n"
-		 		  + " +------------------------+ \n"
-		 		  + "9| X  O                   |9\n"
-		 		  + "8| O  X                   |8\n"
-		 		  + "7| X  X                   |7\n"
-		 		  + "6| O  O                   |6\n"
-		 		  + "5| X                      |5\n"
-		 		  + "4| O  X                   |4\n"
-		 		  + "3| X  O                   |3\n"
-		 		  + "2| O  X                   |2\n"
-		 		  + "1| X  O                   |1\n"
-		 		  + " +------------------------+ \n"
-		 		  + "   a  b  c  d  e  f  g  h   \n";
-		
-		testMove = new Move("b9", testField);
-		assertTrue(testMove.isValidMove());
-	
-		testField = "   a  b  c  d  e  f  g  h   \n"
-		 		  + " +------------------------+ \n"
-		 		  + "9| X  O                   |9\n"
-		 		  + "8| O  X                   |8\n"
-		 		  + "7| X  X  O  X     O  X  X |7\n"
-		 		  + "6| O  O                   |6\n"
-		 		  + "5| X  O                   |5\n"
-		 		  + "4| O  X                   |4\n"
-		 		  + "3| X  O                   |3\n"
-		 		  + "2| O  X                   |2\n"
-		 		  + "1| X  O                   |1\n"
-		 		  + " +------------------------+ \n"
-		 		  + "   a  b  c  d  e  f  g  h   \n";
-		
-		testMove = new Move("7h", testField);
-	}
-*/
 }

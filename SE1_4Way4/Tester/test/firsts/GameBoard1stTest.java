@@ -58,7 +58,7 @@ class GameBoard1stTest {
 		assertEquals(7, testBoard.getColumns());
 		
 		assertEquals(emptySevenSquareBoard, testBoard.printBoard());
-		
+		assertNotEquals(emptyRectSquareBoard, testBoard.printBoard());
 		
 		testBoard = new GameBoard(10, 8);
 
@@ -66,7 +66,7 @@ class GameBoard1stTest {
 		assertEquals(8, testBoard.getColumns());
 		
 		assertEquals(emptyRectSquareBoard, testBoard.printBoard());
-		
+		assertNotEquals(emptySevenSquareBoard, testBoard.printBoard());
 	}
 	
 	@Test 
@@ -108,6 +108,9 @@ class GameBoard1stTest {
 					   	+ "    a   b   c   d   e   f   g   h   ";
 		
 		assertEquals(output, testBoard.printBoard());
+		
+		testBoard.setField(8, 0, 'X');//changing the board, so its not equal anymore 
+		assertNotEquals(output, testBoard.printBoard());//negative testing
 	}
 
 }
