@@ -1,6 +1,6 @@
 package full_field;
 
-import 
+import src.model.Constants;
 
 public class GameBoard {
 	private char[][] board;  // = fields
