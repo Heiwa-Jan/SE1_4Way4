@@ -3,54 +3,50 @@ package src.model;
 import src.controller.UserInput;
 import src.view.PrintCanvas;
 
-/*
- *  Instanzvariable isKI + getter & setter
- * 	Konstruktor mit boolean erweitert
- * 
- * 
- * */
-
 public class Player {
 	private String name;
 	private char token = ' ';
 	private boolean isKI;
 	private int KIDifficulty;
 
-
+	/**
+	 * Initialisiert einen neuen Spieler und fragt bei 1Spieler die Schwierigkeit
+	 * der KI ab.
+	 * 
+	 * @param playerName
+	 * @param isKI
+	 */
 	public Player(String playerName, boolean isKI) {
 		this.setName(playerName);
 		this.setKI(isKI);
 		boolean invalidInput = true;
-		
-		
-		if(this.isKI()) {
+
+		// Wird gegen die KI gespielt, Abfrage der Schwierigkeit
+		if (this.isKI()) {
 			PrintCanvas.print("Welche Schwierigkeit?");
 			PrintCanvas.print("1 = leicht, 2 = mittel, 3 = schwer");
-			while(invalidInput) {
+			while (invalidInput) {
 				try {
 					this.setKIDifficulty(Integer.parseInt(UserInput.readString()));
 				} catch (NumberFormatException e) {
 
 				}
-				if(this.getKIDifficulty() > 3 || this.getKIDifficulty() < 1) {
+				if (this.getKIDifficulty() > 3 || this.getKIDifficulty() < 1) {
 					PrintCanvas.print("Bitte nur 1, 2 oder 3 eingeben");
-				}
-				else {
+				} else {
 					invalidInput = false;
 				}
 			}
 		}
 	}
-		
-	public Player(String playerName, boolean isKI2, boolean tournament) {
-		this.setName(playerName);
-		this.setKI(isKI);
-		boolean invalidInput = true;
-		
-		if(!tournament) {
-			PrintCanvas.print("Error beim Initialisieren der Spieler");
-		
-		}
+
+	// Getter/Setter
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public char getToken() {
@@ -61,14 +57,6 @@ public class Player {
 		this.token = token;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public boolean isKI() {
 		return isKI;
 	}
@@ -76,6 +64,7 @@ public class Player {
 	public void setKI(boolean isKI) {
 		this.isKI = isKI;
 	}
+
 	public int getKIDifficulty() {
 		return KIDifficulty;
 	}

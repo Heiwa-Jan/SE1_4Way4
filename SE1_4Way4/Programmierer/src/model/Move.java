@@ -1,366 +1,240 @@
 package src.model;
 
-import java.util.Scanner;
-
-import src.view.PrintCanvas;
+import src.model.MoveAllTokens;
 
 public class Move {
-	//Default-Werte dienen der Erkennung eines Eingabefehlers
-	private int line = -1;
-	private int column = -1;
-	private int direction = -1;
+	private static final int NUMBER = 48;
+	private static final int LETTER = 97;
+	private static final int LEER = 0;
+
 	private GameBoard board;
-	private String moveString = null;
+	private String move = null;
+	private int[][] content;
 
 	/**
-	 * constructor for TESTING and DEBUGGING only (without input String)
-	 * @param line
-	 * @param column
-	 * @param direction
+	 * Initialisiert einen Move auf gegebenem board mit gegebener Richtung
+	 * 
+	 * @param board
+	 * @param move
 	 */
-	public Move(int line, int column, int direction, GameBoard board) {
-		this.setColumn(column);
-		this.setLine(line);
-		this.setDirection(direction);
-		this.setMoveString(this.toString());
-
-		this.board = board;
-	}
-
-
-	public Move(GameBoard board, String move) {
-		this.board = board;
-		this.moveString = move;
-
-		//direkt getValidMove() im Konstruktor aufrufen?
-		//yes
-	}
-
 	public Move(GameBoard board) {
-		this.board = board;
+		this.setBoard(board);
 
-		//direkt getValidMove() im Konstruktor aufrufen?
-		//yes
+		setContent(board.getBoard());
 	}
 
-	/**
-	 * the current move of the player will get translated from String to Move-object
-	 * @param in
-	 * @return move
-	 */
-	public Move getValidMove() {
-		Scanner input = new Scanner(System.in);
-		moveString = input.next();
-		while(!(this.isValidMove())) {	//wenn der übergebene String kein valider Zug ist, wird ein neuer angefordert
+	public GameBoard makeMove(String ein, int token) {
+		int x = 0;
+		int y = 0;
+		int[][] t = content;
 
-			// wieder auf default-Werte zurücksetzen, zur Vermeidung zufällig entstehender Züge
-			this.setColumn(-1);
-			this.setDirection(-1);
-			this.setLine(-1);
+		// Bei Eingabe mit Richtung
+		if (ein.length() == 3) {
+			int sum = ein.charAt(0) + ein.charAt(1) + ein.charAt(2);
+			int[] temp = calculate(ein);
+			x = temp[0];
+			y = temp[1];
+			// System.out.println("Summe: " + sum + " X: " + x + " Y: " + y);
+			if (sum == 246 || sum == 252) {
+				t = MoveAllTokens.moveAllUp(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllUp(t);
+			} else if (sum == 254 || sum == 260) {
+				t = MoveAllTokens.moveAllRight(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllRight(t);
+			} else if (sum == 266 || sum == 272) {
+				t = MoveAllTokens.moveAllLeft(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllLeft(t);
+			} else if (sum == 275 || sum == 269) {
+				t = MoveAllTokens.moveAllDown(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllDown(t);
+			} else {
 
-			PrintCanvas.print("Ungültiger Zug");
-			moveString = input.next();
+				System.out.println("Falsche Eingabe! ERROR move 3");
+			}
+			// Bei Eingabe ohne Richtung
+		} else if (ein.length() == 2) {
+			int[] temp = calculate(ein);
+			x = temp[0];
+			y = temp[1];
+			switch (x) {
+			case 0:
+				t = MoveAllTokens.moveAllDown(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllDown(t);
+				break;
+			case 6:
+				t = MoveAllTokens.moveAllUp(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllUp(t);
+				break;
+			}
+			switch (y) {
+			case 0:
+				t = MoveAllTokens.moveAllRight(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllRight(t);
+				break;
+			case 6:
+				t = MoveAllTokens.moveAllLeft(t);
+				t[x][y] = token;
+				t = MoveAllTokens.moveAllLeft(t);
+			}
+		} else {
+			System.out.println("Falsche Eingabe! ERROR move 2");
 		}
-		return this;
-
-		//Eingabe bestenfalls komplett in eigene Klasse in View auslagern!
-		//-> Fehlerabfrage + einlesen des neuen Inputs auslagern in Menü?
+		content = t;
+		board.setBoard(content);
+		GameBoard result = board.copy();
+		return result;
 	}
-	/**
-	 * a new String [input] gets converted to Move object
-	 * @param input
-	 * @return
-	 */
-	public boolean isValidString(String input) {
-		if(input.length() > 2 && input.length() <= 4) {
-			// der Zug findet in einer Ecke des Spielfelds statt (am Ende des Zuges wird eine zusätzliche Richtungsangabe gemacht)
-			if(input.length() > 2 && Constants.directions.contains(input.substring(input.length()-1))) {	//die angegebene Richtung einlesen
-				this.setDirection(Constants.directions.indexOf(input.charAt(input.length()-1)));		//die Richtung in int umwandeln und speichern
 
-				if(this.getDirection() == 0) {	// kann 10 sein	// == left
-					if(!(input.contains("a"))) {	
-						return false;	//wenn der Zug nicht ganz links stattfindet: FEHLER
-					}
+	public int[] calculate(String input) {
+		int[] result = new int[2];
 
-					this.setColumn(0);	//der Zug muss zwingend in der Spalte ganz links stattfinden
-					if(input.contains("10")) {	//ist eine 10 enthalten, ist es die obere Ecke (10al)
-						this.setLine(9);
-					}
-					else if(input.contains("1")) {	//ist nur eine 1 statt einer 10 enthalten, ist es die untere Ecke (1al)
-						this.setLine(0);
-					}
-					//wenn die höchste Koordinate des Feldes enthalten ist, ist es die obere Ecke (9al)
-					else if(input.contains(Constants.coordinatesRows.substring(board.getRows()-1, board.getRows()))) {  
-						this.setLine(board.getRows()-1);
-					}	
-					else {	//ist die Eingabe keine Ecke: FEHLER
-						return false;
-					}
-				}
-				else if(this.getDirection() == 1) {	// == rechts
-					if(!(input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns())))) { 
-						return false;	//wenn der Zug nicht ganz rechts stattfindet: FEHLER
-					}
-
-					this.setColumn(board.getColumns()-1);	//der Zug muss zwingend in der Spalte ganz rechts stattfinden
-					if(input.contains("10")) {	//ist eine 10 enthalten, ist es die obere Ecke (10jr)
-						this.setLine(9);
-					}
-					else if(input.contains("1")) {	//ist eine 1 statt einer 10 enthalten, ist es die untere Ecke (1jr)
-						this.setLine(0);
-					}
-					//wenn die höchste Koordinate des Feldes enthalten ist, ist es die obere Ecke (9jr)
-					else if(input.contains(Constants.coordinatesRows.substring(board.getRows()-1, board.getRows()))) { 
-						this.setLine(board.getRows()-1);
-					}
-					else {	//ist die Eingabe keine Ecke: FEHLER
-						return false;
-					}
-				}
-				else if(this.getDirection() == 2) {	// == oben
-					if(!(input.contains(Constants.coordinatesRows.substring(board.getRows()-1, board.getRows()))) ) { 
-						return false;	//wenn der Zug nicht ganz oben stattfindet: FEHLER
-					}
-
-					this.setLine(0);	//der Zug muss zwingend in der obersten Reihe stattfinden
-					if(input.contains("a")) {	//ist ein a enthalten, ist es die linke Ecke (10au)
-						this.setColumn(0);
-					}
-					//wenn die höchste Koordinate des Feldes enthalten ist, ist es die rechte Ecke (10ju)
-					else if(input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) { 
-						this.setColumn(board.getColumns()-1);
-					}
-					else {	//ist die Eingabe keine Ecke: FEHLER
-						return false;
-					}
-				}
-				else if(this.getDirection() == 3) {	// == unten
-					if(!(input.contains("1"))) {	//wenn der Zug nicht ganz unten stattfindet: FEHLER
-						return false;
-					}
-
-					this.setLine(board.getRows()-1);	//derZug muss zwingend in der untersten Reihe stattfinden
-					if(input.contains("a")) {	//ist ein a enthalten, ist es die linke Ecke (1ad)
-						this.setColumn(0);
-					}
-					//wenn die höchste Koordinate des Feldes enthalten ist, ist es die rechte Ecke (1jd)
-					else if(input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) { 
-						this.setColumn(board.getColumns()-1);
-					}
-					else {	//ist die Eingabe keine Ecke: FEHLER
-						return false;
-					}
-				}
+		for (int i = 0; i < 2; i++) {
+			// Ist der Character eine Zahl von 1 bis 9
+			if (input.charAt(i) < 56 && input.charAt(i) > 47) {
+				result[0] = content.length - (input.charAt(i) - NUMBER);
 			}
-			else if(input.length() == 3) {
-				if(input.contains("10")) {
-					//wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
-					if(input.contains("a") || input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) {  
-						return false;
-					}
-
-					this.setDirection(2);	// Richtung des Einwurfs == unten
-					this.setLine(0);	//der Einwurf erfolgt ganz unten
-					for(int i = 0; i < input.length(); i++) {	//jede Position der Eingabe auf die Spaltenangabe prüfen
-						if(Constants.coordinatesColumns.contains(input.substring(i, i+1))) {  
-							this.setColumn(Constants.coordinatesColumns.indexOf(input.charAt(i))); //bei gefundener Spaltenangabe: diese zuweisen
-						}
-					}
-
-					return true;
-				}
-				else {
-					return false;
-				}
+			// Ist der Character ein Buchstabe von a bis g
+			else if (input.charAt(i) < 104 && input.charAt(i) > 96) {
+				result[1] = input.charAt(i) - LETTER;
+			} else {
+				System.out.println("Falsche Eingabe! ERROR cal");
 			}
 		}
-		// der Zug findet NICHT in einer Ecke des Spielfelds statt (es wird keine zusätzliche Richtungsangabe gemacht)
-		else if(input.length() == 2){
-			if(input.length() >= 2 && input.length() <= 3) {	//ohne Richtungsangabe darf die Eingabe nicht 4 Zeichen lang sein
-				//wenn ein a enthalten ist, erfolgt der Einwurf von links
-				if(input.length() == 2 && input.contains("a")) {	//bei Angabe der Spalte (ohne Richtungsangabe) ist keine 10 möglich
 
-					// wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
-					if(input.contains("1") || input.contains(Constants.coordinatesRows.substring(board.getRows()-1, board.getRows()))) {  
-						return false;
-					}
-					this.setDirection(0);	// Richtung des Einwurfs == links
-					this.setColumn(0);	//der Einwurf erfolgt ganz links
-					for(int i = 0; i < input.length(); i++) {	//jede Position der Eingabe auf die Zeilenangabe prüfen
-						if(Constants.coordinatesRows.contains(input.substring(i, i+1))) {
-							this.setLine(Constants.coordinatesRows.indexOf(input.charAt(i)));  //bei gefundener Zeilenangabe: diese zuweisen
+		return result;
+	}
+
+	public boolean isValidMove(String input) {
+		boolean validMove = false;
+
+		if (input.length() > 1 && input.length() < 4) {
+			if (((input.charAt(0) > 47 && input.charAt(0) <= (48 + content.length))
+					&& (input.charAt(1) > 96 && input.charAt(1) <= (97 + content[0].length)))
+					|| ((input.charAt(1) > 47 && input.charAt(1) <= (48 + content.length))
+							&& (input.charAt(0) > 96 && input.charAt(0) <= (97 + content[0].length)))) {
+				int[] coord = calculate(input);
+				int x = coord[0];
+				int y = coord[1];
+				if (input.length() == 2) {
+
+					// X befindet sich am Rand(oben/unten) somit y beliebig
+					if (x == 0 || x == 6) {
+						if (y >= 0 && y <= 6) {
+							for (int i = 0; i < content.length; i++) {
+								if (content[i][y] == LEER) {
+									validMove = true;
+									return validMove;
+								}
+							}
+						} else {
+							return validMove;
+						}
+						// X befindet sich im mittlerem Bereich(1-5) somit ist y am Rand(links/rechts)
+					} else if (x > 0 && x < 6) {
+						if (y == 0 || y == 6) {
+							for (int i = 0; i < content.length; i++) {
+								if (content[x][i] == LEER) {
+									validMove = true;
+									return validMove;
+								}
+							}
+						} else {
+							return validMove;
+						}
+						// Y befindet sich am Rand(links/rechts) somit x beliebig
+					} else if (y == 0 || y == 6) {
+						if (x >= 0 && x <= 6) {
+							for (int i = 0; i < content.length; i++) {
+								if (content[x][i] == LEER) {
+									validMove = true;
+									return validMove;
+								}
+							}
+						} else {
+							return validMove;
+						}
+						// Y befindet sich im mittlerem Bereich(1-5) somit x am Rand(oben/unten)
+					} else if (y > 0 && y < 6) {
+						if (x == 0 || x == 6) {
+							for (int i = 0; i < content.length; i++) {
+								if (content[i][y] == LEER) {
+									validMove = true;
+									return validMove;
+								}
+							}
+						} else {
+							return validMove;
 						}
 					}
-				}
-				// wenn die höchste Spaltenzahl enthalten ist, erfolgt der Einwurf von rechts
-				else if(input.length() == 2 && input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) {	//wenn die Spalte und keine Richtung angegeben ist, keine 10 möglich
-
-					//wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
-					if(input.contains("1") || input.contains(Constants.coordinatesRows.substring(board.getRows()-1, board.getRows()))) {
-						return false;
-					}
-					this.setDirection(1);	// Richtung des Einwurfs == rechts
-					this.setColumn(board.getColumns()-1);	//der Einwurf erfolgt ganz rechts
-					for(int i = 0; i < input.length(); i++) {	//jede Position der Eingabe auf die Zeilenangabe prüfen
-						if(Constants.coordinatesRows.contains(input.substring(i, i+1))) {  
-							if(Constants.coordinatesRows.indexOf(input.substring(i, i+1)) < board.getRows()){
-								this.setLine(Constants.coordinatesRows.indexOf(input.charAt(i)));  //bei gefundener Zeilenangabe: diese zuweisen
+				} else if (input.length() == 3) {
+					int sum = input.charAt(0) + input.charAt(1) + input.charAt(2);
+					if ((sum == 246 || sum == 252) && input.charAt(2) == 'd') {
+						for (int i = 0; i < content.length; i++) {
+							if (content[i][y] == LEER) {
+								validMove = true;
+								return validMove;
 							}
 						}
-					}
-				}
-
-				//wenn die höchste Zeilenzahl enthalten ist, erfolgt der Einwurf von unten
-				else if(input.contains(Constants.coordinatesRows.substring(board.getRows()-1, board.getRows()))) {	
-
-					//wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
-					if(input.contains("a") || input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) {  
-						return false;
-					}
-
-					this.setDirection(2);	// Richtung des Einwurfs == unten
-					this.setLine(0);	//der Einwurf erfolgt ganz unten
-					for(int i = 0; i < input.length(); i++) {	//jede Position der Eingabe auf die Spaltenangabe prüfen
-						if(Constants.coordinatesColumns.contains(input.substring(i, i+1))) {  
-							this.setColumn(Constants.coordinatesColumns.indexOf(input.charAt(i))); //bei gefundener Spaltenangabe: diese zuweisen
+					} else if ((sum == 254 || sum == 260) && input.charAt(2) == 'l') {
+						for (int i = 0; i < content[0].length; i++) {
+							if (content[x][i] == LEER) {
+								validMove = true;
+								return validMove;
+							}
 						}
-					}
-				}
-				//wenn eine 1 enthalten ist, erfolgt der Einwurf von oben
-				else if(input.length() == 2 && input.contains("1")) {	// keine 10 möglich
-
-					//wenn die Eingabe eine Ecke OHNE Richtungsangabe ist: FEHLER
-					if(input.contains("a") || input.contains(Constants.coordinatesColumns.substring(board.getColumns()-1, board.getColumns()))) {  
-						return false;
-					}
-
-					this.setDirection(3);	// Richtung des Einwurfs == oben
-					this.setLine(board.getRows()-1);	//der Einwurf erfolgt ganz oben
-					for(int i = 0; i < input.length(); i++) {
-						if(Constants.coordinatesColumns.contains(input.substring(i, i+1))) {  //jede Position der Eingabe auf die Spaltenangabe prüfen
-							this.setColumn(Constants.coordinatesColumns.indexOf(input.charAt(i)));  //bei gefundener Spaltenangabe: diese zuweisen
+					} else if ((sum == 266 || sum == 272) && input.charAt(2) == 'r') {
+						for (int i = 0; i < content[0].length; i++) {
+							if (content[x][i] == LEER) {
+								validMove = true;
+								return validMove;
+							}
 						}
+					} else if ((sum == 275 || sum == 269) && input.charAt(2) == 'u') {
+						for (int i = 0; i < content.length; i++) {
+							if (content[i][y] == LEER) {
+								validMove = true;
+								return validMove;
+							}
+						}
+					} else {
+						return validMove;
 					}
 				}
+
 			}
 		}
-
-		if(this.getDirection() == -1 || this.getColumn() == -1 || this.getLine() == -1){	//wenn es sich nicht um eine gültige Eingabe handelt: FEHLER
-			return false;
-		}
-		return true;	//wenn Eingabe erfolgreich: ERFOLG
-	}
-	/**
-	 * tests if there's space in the chosen row/column for placing a token
-	 * @return boolean true if token can be placed
-	 */
-	public boolean isValidMove() {
-		if(!isValidString(this.moveString)) {
-			return false;
-		} else if(direction == 0) { // == left
-
-			for(int i = 0; i < board.getColumns(); i++) {	//wenn in der betreffenden Reihe noch min. ein Platz frei ist: TRUE
-				try {
-					if(board.getField(this.getLine(), i) == ' ') {
-						return true;
-					}
-				}
-				catch (ArrayIndexOutOfBoundsException e) {
-					return false;
-				}
-			}
-		}
-		else if(direction == 1) { // == right
-			for(int i = 0; i < board.getColumns(); i++) {	//wenn in der betreffenden Reihe noch min. ein Platz frei ist: TRUE  
-				try {
-					if(board.getField(line, board.getColumns()-i-1) == ' ') {
-						return true;
-					}
-				}
-				catch (ArrayIndexOutOfBoundsException e) {
-					return false;
-				}
-			}
-		}
-		else if(direction == 2) { // == up
-			for(int i = 0; i< board.getRows(); i++) {	//wenn in der betreffenden Spalte noch min. ein Platz frei ist: TRUE
-				try {
-					if(board.getField(i, column) == ' ') {
-						return true;
-					}
-				}
-				catch (ArrayIndexOutOfBoundsException e) {
-					return false;
-				}
-			}
-		}
-		else { // == down
-			for(int i = 0; i < board.getRows(); i++) {	//wenn in der betreffenden Spalte noch ein Platz frei ist: TRUE
-				try {
-					if(board.getField(board.getRows()-i-1, column)  == ' ') {
-						return true;
-					}
-				}
-				catch (ArrayIndexOutOfBoundsException e) {
-					return false;
-				}
-			}
-		}
-		return false;	//wenn in der Zeile/Spalte kein Platz mehr ist: FALSE
-	}
-	// getters / setters:
-
-	public int getLine() {
-		return line;
-	}
-	public void setLine(int line) {
-		this.line = line;
-	}
-	public int getColumn() {
-		return column;
-	}
-	public void setColumn(int column) {
-		this.column = column;
-	}
-	public int getDirection() {
-		return direction;
-	}
-	private void setDirection(int direction) {
-		this.direction = direction;
-	}
-	
-	public String getMoveString() {
-	
-		return moveString;
+		return validMove;
 	}
 
-	public void setMoveString(String moveString) {
-		this.moveString = moveString;
+	// Getter/Setter
+	public GameBoard getBoard() {
+		return board;
 	}
 
-	public String toString() {
-		moveString = "";
-		moveString += line;
-		char colChar = (char) ('a' + column);
-		moveString += colChar;
-		if(direction == 0) {
-			moveString += 'l';
-		} else if(direction == 1) {
-			moveString += 'r';
-		} else if(direction == 2) {
-			moveString += 'u';
-		} else if(direction == 4) {
-			moveString += 'd';
-		} 
-		
-		return moveString;
+	public void setBoard(GameBoard board) {
+		this.board = board;
+	}
+
+	public String getMove() {
+		return move;
+	}
+
+	public void setMove(String move) {
+		this.move = move;
+	}
+
+	public int[][] getContent() {
+		return content;
+	}
+
+	public void setContent(int[][] content) {
+		this.content = content;
 	}
 }
-
-//Aenderung 29.12. Lejana:
-//isValisString wird jetzt von vorgegebener Methode isValidMove() mit aufgerufen
-//Konstruktor mit String, den GameMain fuer die KI nutzt
-
-//TODO
-//input ueber controller, getValidMove() anpassen
-//getValidMove() am besten gleich im Konstruktor rufen
